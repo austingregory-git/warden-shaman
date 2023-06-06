@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-
+import Navbar from './components/index';
+import { BrowserRouter as Router, Routes, Route }
+    from 'react-router-dom';
+import Home from './pages';
+import Overview from './pages/overview';
+import UI from './pages/ui';
+import Talents from './pages/talents';
+ 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route exact path='/' element={<Home />} />
+                <Route path='/overview' element={<Overview />} />
+                <Route path='/ui' element={<UI />} />
+                <Route path='/talents' element={<Talents />} />
+            </Routes>
+        </Router>
+    );
 }
-
+ 
 export default App;
+
+// import React from "react";
+// import DocViewer from "./pages/doc.js";
+
+// export default function App() {
+//   return (
+//     <div className="App">
+//       <h1>Sample Doc file:</h1>
+//       <DocViewer source="https://docs.google.com/document/d/1_Ou_DofYLw2k8gxFPEouvfDfn4_M2kgx16BYm4Bg_Vc" />
+//     </div>
+//   );
+// }
+
