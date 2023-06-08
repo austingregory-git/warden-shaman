@@ -5,6 +5,18 @@
     stroke-width: 2;
 }
 
+.rd3t-link.active_path { 
+  fill: yellow;
+  stroke: yellow;
+  stroke-width: 4;
+}
+
+.rd3t-link.inactive_path { 
+  fill: gray;
+  stroke: gray;
+  stroke-width: 4;
+}
+
 .tooltip {
   top: -5px;
   left: 105%;
@@ -19,4 +31,29 @@
   border-width: 5px;
   border-style: solid;
   border-color: transparent black transparent transparent;
+}
+
+.points {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: fit-content;
+  margin: auto;
+}
+
+.available_border {
+  border: 4px solid limegreen
+}
+
+.chosen_border {
+  border: 4px solid yellow
+}
+
+.unavailable_border {
+  border: 4px solid gray
 }
