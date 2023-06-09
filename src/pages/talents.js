@@ -22,35 +22,64 @@ const borderWidth = 4
 const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
 //const translate = {x: this.props.width, y: this.props.height}
 
-const renderForeignObjectNode = ({
-  nodeDatum,
-  toggleNode,
-  foreignObjectProps,
-  handleNodeClick,
-}) => (
-  <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
-    <foreignObject {...foreignObjectProps}>
-        <div style={{border: "4px solid limegreen", height: nodeSize.y, width: nodeSize.x}}>
-          <img src={nodeDatum.image} onClick={() => handleNodeClick(nodeDatum, foreignObjectProps)}></img>
-        </div>
-    </foreignObject>
-  </Tooltip>
-);
+// const renderForeignObjectNode = ({
+//   nodeDatum,
+//   toggleNode,
+//   foreignObjectProps,
+//   handleNodeClick,
+// }) => (
+//   <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
+//     <foreignObject {...foreignObjectProps}>
+//         <div style={{border: "4px solid limegreen", height: nodeSize.y, width: nodeSize.x}}>
+//           <img src={nodeDatum.image} onClick={() => handleNodeClick(nodeDatum, foreignObjectProps)}></img>
+//         </div>
+//     </foreignObject>
+//   </Tooltip>
+// );
 
-const renderForeignObjectNodeChosen = ({
-  nodeDatum,
-  toggleNode,
+function renderForeignObjectNode(
+  {nodeDatum},
   foreignObjectProps,
-  handleNodeClick,
-}) => (
-  <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
-    <foreignObject {...foreignObjectProps}>
-        <div style={{border: "4px solid yellow", height: nodeSize.y, width: nodeSize.x}}>
-          <img src={nodeDatum.image} onClick={() => handleNodeClick(nodeDatum, foreignObjectProps)}></img>
+  handleNodeClick) {
+    return(
+      <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
+      <foreignObject {...foreignObjectProps}>
+        <div xmlns='http://www.w3.org/1999/xhtml' style={{border: "4px solid limegreen", height: nodeSize.y, width: nodeSize.x}}>
+              <img src={nodeDatum.image} onClick={() => handleNodeClick(nodeDatum, foreignObjectProps)}></img>
         </div>
-    </foreignObject>
-  </Tooltip>
-);
+      </foreignObject>
+    </Tooltip>
+    )
+  }
+
+
+function renderForeignObjectNodeChosen(
+  {nodeDatum},
+  foreignObjectProps,
+  handleNodeClick) {
+    return(
+      <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
+        <foreignObject {...foreignObjectProps}>
+          <div xmlns='http://www.w3.org/1999/xhtml' style={{border: "4px solid black", height: nodeSize.y, width: nodeSize.x}}>
+                <img src={nodeDatum.image} onClick={() => handleNodeClick(nodeDatum, foreignObjectProps)}></img>
+          </div>
+        </foreignObject>
+      </Tooltip>
+    )
+}
+// const renderForeignObjectNodeChosen = ({
+//   nodeDatum,
+//   foreignObjectProps,
+//   handleNodeClick,
+// }) => (
+//   <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
+//     <foreignObject {...foreignObjectProps}>
+//         <div style={{border: "4px solid yellow", height: nodeSize.y, width: nodeSize.x}}>
+//           <img src={nodeDatum.image} onClick={() => handleNodeClick(nodeDatum, foreignObjectProps)}></img>
+//         </div>
+//     </foreignObject>
+//   </Tooltip>
+// );
 
 const customNodeFnMapping = {
   available: {
@@ -88,6 +117,18 @@ const customNodeFnMapping = {
   },
 };
 
+const handleNodeClick = (nodeDatum, foreignObjectProps) => {
+  console.log(nodeDatum.points)
+  //for later... if(nodeDatum.points < nodeDatum.maxPoints)
+  if(nodeDatum.points < 2)
+    nodeDatum.points++
+  console.log(nodeDatum.points)
+  console.log(nodeDatum.description)
+  nodeDatum.description = "Ooga!"
+  console.log(nodeDatum.description);
+  this.handleCustomNodeFnChange()
+};
+
 // const handleNodeClick = (nodeDatum, foreignObjectProps) => {
 //   console.log(nodeDatum.description)
 //   nodeDatum.description = "Ooga!"
@@ -100,7 +141,6 @@ class TalentTree extends Component {
       super();
 
       this.addedNodesCount = 0;
-
       this.state = {
         data: data,
         orientation: 'vertical',
@@ -112,7 +152,8 @@ class TalentTree extends Component {
         translateY: window.innerWidth/16,
         separation: { siblings: 2, nonSiblings: 2},
         nodeSize: nodeSize,
-        renderCustomNodeElement: {renderForeignObjectNode},
+        //renderCustomNodeElement: {renderForeignObjectNode}
+        renderCustomNodeElement: renderForeignObjectNode,
         //renderCustomNodeElement: customNodeFnMapping['available'].fn
       };
 
@@ -135,6 +176,7 @@ class TalentTree extends Component {
 
   render() {
     //const [translate, containerRef] = useCenteredTree();
+    const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
     const straightPathFunc = (linkDatum) => {
       const { source, target } = linkDatum;
       //Target Node is left of the source Node
@@ -154,6 +196,11 @@ class TalentTree extends Component {
     };
 
     const handleNodeClick = (nodeDatum, foreignObjectProps) => {
+      console.log(nodeDatum.points)
+      //for later... if(nodeDatum.points < nodeDatum.maxPoints)
+      if(nodeDatum.points < 2)
+        nodeDatum.points++
+      console.log(nodeDatum.points)
       console.log(nodeDatum.description)
       nodeDatum.description = "Ooga!"
       console.log(nodeDatum.description);
@@ -172,17 +219,16 @@ class TalentTree extends Component {
               nodeSize={this.state.nodeSize}
               separation={this.state.separation}
               depthFactor={this.state.depthFactor}
-              renderCustomNodeElement={(rd3tProps) =>
-                  renderForeignObjectNode({ ...rd3tProps, foreignObjectProps, handleNodeClick})
-              }
-              // renderCustomNodeElement={
-              //   this.state.renderCustomNodeElement
-              //     ? rd3tProps => this.state.renderCustomNodeElement(rd3tProps, this.state)
-              //     : undefined
+              // renderCustomNodeElement={(rd3tProps) =>
+              //     renderForeignObjectNode({ ...rd3tProps, foreignObjectProps, handleNodeClick})
               // }
+              // renderCustomNodeElement={(rd3tProps) =>
+              //   {this.state.renderCustomNodeElement(...rd3tProps, foreignObjectProps, handleNodeClick)}
+              // }
+              renderCustomNodeElement={(rd3tProps) => this.state.renderCustomNodeElement(rd3tProps, foreignObjectProps, handleNodeClick)}
               // renderCustomNodeElement={
               //   this.state.renderCustomNodeElement
-              //     ? rd3tProps => this.state.renderCustomNodeElement(rd3tProps, this.state)
+              //     ? rd3tProps => this.state.renderCustomNodeElement(rd3tProps, foreignObjectProps, this.state)
               //     : undefined
               // }
               //pathFunc="straight"
@@ -207,21 +253,6 @@ const generateTooltip = (nodeDatum) => {
   const tooltip = name + abilityDetails + requirements + description
   return tooltip;
 }
-
-const renderForeignObjectNodeTest = ({
-  nodeDatum,
-  toggleNode,
-  foreignObjectProps,
-  handleNodeClick,
-}) => (
-  <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
-    <foreignObject {...foreignObjectProps}>
-        <div style={{border: "4px solid limegreen", height: nodeSize.y, width: nodeSize.x}}>d
-          <img src={nodeDatum.image} onClick={handleNodeClick({nodeDatum, foreignObjectProps})}></img>
-        </div>
-    </foreignObject>
-  </Tooltip>
-);
 
 // const Talents = () => {
 
