@@ -42,7 +42,41 @@ export const data = {
                             maxPoints: 1,
                             tier: 4,
                             status: 'unavailable',
-                            description: "[Evoke the Storm]: Critical strikes have a chance to make your next [Lightning Bolt] or [Chain Lightning] instant cast, free, and empowered. Proc lasts 12 seconds."
+                            description: "[Evoke the Storm]: Critical strikes have a chance to make your next [Lightning Bolt] or [Chain Lightning] instant cast, free, and empowered. Proc lasts 12 seconds.",
+                            children: [
+                                {
+                                    name: "Wind Whisperer",
+                                    image: "IceColdWaterIcon.jpg",
+                                    type: "passive",
+                                    requirements: ["Requires Shaman"],
+                                    currentPoints: 0,
+                                    maxPoints: 1,
+                                    tier: 5,
+                                    status: 'unavailable',
+                                    description: "[Chain Lightning] casts make your next [Chain Heal] cast instant, and vice versa",
+                                    children: [
+                                        
+                                    ]
+                                },
+                                {
+                                    
+                                    name: "Deflector Totem",
+                                    image: "IceColdWaterIcon.jpg",
+                                    type: "passive",
+                                    requirements: ["Requires Shaman"],
+                                    currentPoints: 0,
+                                    maxPoints: 1,
+                                    tier: 5,
+                                    sharedParent: true,
+                                    sharedParents: 2,
+                                    parentOrientation: 'left',
+                                    status: 'unavailable',
+                                    description: "[Chain Lightning] casts make your next [Chain Heal] cast instant, and vice versa",
+                                    children: [
+                                        
+                                    ]
+                                },
+                            ]
                             
                         },
                         {
@@ -53,6 +87,9 @@ export const data = {
                             currentPoints: 0,
                             maxPoints: 1,
                             tier: 4,
+                            sharedParent: true,
+                            sharedParents: 2,
+                            parentOrientation: 'left',
                             status: 'unavailable',
                             description: "[Chain Lightning] casts make your next [Chain Heal] cast instant, and vice versa"
                         }
@@ -77,8 +114,49 @@ export const data = {
                             currentPoints: 0,
                             maxPoints: 1,
                             tier: 4,
+                            sharedParent: true,
+                            sharedParents: 2,
+                            parentOrientation: 'right',
                             status: 'unavailable',
                             description: "[Chain Lightning] casts make your next [Chain Heal] cast instant, and vice versa",
+                            children: [
+                                {
+                                    name: "Deflector Totem",
+                                    image: "IceColdWaterIcon.jpg",
+                                    type: "passive",
+                                    requirements: ["Requires Shaman"],
+                                    currentPoints: 0,
+                                    maxPoints: 1,
+                                    tier: 5,
+                                    sharedParent: true,
+                                    sharedParents: 2,
+                                    parentOrientation: 'right',
+                                    status: 'unavailable',
+                                    description: "[Chain Lightning] casts make your next [Chain Heal] cast instant, and vice versa",
+                                    children: [
+                                        
+                                    ]
+                                },
+                                {
+                                    name: "River Walker",
+                                    image: "IceColdWaterIcon.jpg",
+                                    type: "passive",
+                                    requirements: ["Requires Shaman"],
+                                    currentPoints: 0,
+                                    maxPoints: 1,
+                                    tier: 5,
+                                    sharedParent: true,
+                                    sharedParents: 2,
+                                    parentOrientation: 'left',
+                                    status: 'unavailable',
+                                    description: "[Chain Lightning] casts make your next [Chain Heal] cast instant, and vice versa",
+                                    children: [
+                                        
+                                    ]
+    
+                                }
+
+                            ]
                         },
                         {
                             name: "Emerald Totem",
@@ -89,6 +167,9 @@ export const data = {
                             currentPoints: 0,
                             maxPoints: 1,
                             tier: 4,
+                            sharedParent: true,
+                            sharedParents: 3,
+                            parentOrientation: 'left',
                             status: 'unavailable',
                             description: "Summons a totem at your feet for 15 sec that collects power from all damage you take. When the totem expires or dies, the stored power is released, dealing damage to all enemies within 10 yards for 10% of all damage taken while it was active, divided evenly among targets",
                         }
@@ -128,6 +209,9 @@ export const data = {
                             currentPoints: 0,
                             maxPoints: 1,
                             tier: 4,
+                            sharedParent: true,
+                            sharedParents: 3,
+                            parentOrientation: 'middle',
                             status: 'unavailable',
                             description: "Summons a totem at your feet for 15 sec that collects power from all damage you take. When the totem expires or dies, the stored power is released, dealing damage to all enemies within 10 yards for 10% of all damage taken while it was active, divided evenly among targets",
                         }
@@ -154,6 +238,9 @@ export const data = {
                             currentPoints: 0,
                             maxPoints: 1,
                             tier: 4,
+                            sharedParent: true,
+                            sharedParents: 3,
+                            parentOrientation: 'right',
                             status: 'unavailable',
                             description: "Summons a totem at your feet for 15 sec that collects power from all damage you take. When the totem expires or dies, the stored power is released, dealing damage to all enemies within 10 yards for 10% of all damage taken while it was active, divided evenly among targets",
                         },
