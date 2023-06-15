@@ -9,13 +9,13 @@ const Navbar = () => {
             <Nav>
                 <NavMenu>
                     <img src={WardenShamanLogo}></img>
-                    <NavLink to="/overview" activeStyle>
+                    <NavLink to="/overview">
                         Overview
                     </NavLink>
-                    <NavLink to="/talents" activeStyle>
+                    <NavLink to="/talents2">
                         Talents
                     </NavLink>
-                    <NavLink to="/ui" activeStyle>
+                    <NavLink to="/ui">
                         UI
                     </NavLink>
                     <img src={ClassShamanLogo}></img>
