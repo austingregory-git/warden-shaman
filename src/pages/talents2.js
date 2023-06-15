@@ -12,7 +12,6 @@ const borderWidth = 4
 const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
 
 export function RenderCustomNode({nodeDatum}) {
-    console.log("in render node function")
     return(
         <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
             <foreignObject {...foreignObjectProps}>
@@ -80,7 +79,6 @@ class TalentTree extends Component {
     
     updateLinkPaths() {
         const links = this.state.data.links
-        console.log(links)
         if (links) {
           links.forEach((link) => {
             link.breakPoints = this.createCustomLinkPath(link);
@@ -99,16 +97,7 @@ class TalentTree extends Component {
         const nodeRadius = 30;
         console.log(source)
         console.log(target)
-        console.log(`M${source.x},${source.y}L${target.x},${target.y-nodeSize.y/2}`)
-
-        // if(source.x > target.x)
-        //   return `M${source.x-nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-        // //Target Node is right of the source Node
-        // else if(source.x < target.x)
-        //   return `M${source.x+nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-        // //Target Node is aligned with the source Node
-        // else
-        //   return `M${source.x},${source.y}L${target.x},${target.y-nodeSize.y/2}`;
+        //Target Node is left of the source Node
         if(source.x > target.x) {
             return [
                 {x: source.x-nodeRadius, y: source.y+nodeRadius},
