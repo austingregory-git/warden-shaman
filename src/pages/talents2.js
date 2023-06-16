@@ -8,6 +8,7 @@ import background from "./WardenShamanBackground.PNG";
 import * as d3 from 'd3';
 
 const nodeSize = { x:56, y:56}
+//const nodeSize = {x: window.innerWidth/15, y: window.innerHeight/15}
 const borderWidth = 4
 const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
 
@@ -17,6 +18,9 @@ export function RenderCustomNode({nodeDatum}) {
             <foreignObject {...foreignObjectProps}>
                 <div xmlns='http://www.w3.org/1999/xhtml' style={handleNodeStyle(nodeDatum.status)}>
                         <img src={nodeDatum.image}></img>
+                </div>
+                <div className='allocated-points'>
+                    {nodeDatum.currentPoints}/{nodeDatum.maxPoints}
                 </div>
             </foreignObject>
         </Tooltip>
@@ -30,7 +34,12 @@ const containerStyles = {
     backgroundImage: `url(${background})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover'
-  };
+};
+
+const imageStyle = {
+    width: "75%",
+    height: "75%",
+}
 
 const handleNodeStyle = (status) => {
     if (status === 'available') {
@@ -76,12 +85,31 @@ class TalentTree extends Component {
     // componentDidUpdate() {
     //     this.updateLinkPaths();
     // }
+    incrementTotalPoints() {
+        this.setState((prevState) => ({
+            totalPoints: prevState.totalPoints + 1,
+        }));
+    }
+    decrementTotalPoints() {
+        this.setState((prevState) => ({
+            totalPoints: prevState.totalPoints - 1,
+        }));
+    }
     
     updateLinkPaths() {
         const links = this.state.data.links
         if (links) {
           links.forEach((link) => {
             link.breakPoints = this.createCustomLinkPath(link);
+          });
+        }
+    }
+
+    updateNodes() {
+        const nodes = this.state.data.nodes
+        if (nodes) {
+          nodes.forEach((node) => {
+            RenderCustomNode(node)
           });
         }
     }
@@ -95,8 +123,6 @@ class TalentTree extends Component {
         const source = this.getNodeDataById(linkDatum.source);
         const target = this.getNodeDataById(linkDatum.target);
         const nodeRadius = 30;
-        console.log(source)
-        console.log(target)
         //Target Node is left of the source Node
         if(source.x > target.x) {
             return [
@@ -121,6 +147,98 @@ class TalentTree extends Component {
         }
     };
 
+    onClickNode = (nodeId, nodeDatum) => {
+        const updatedData = { ...this.state.data }; // Make a copy of the original data
+        const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
+      
+        console.log('node current points:', updatedNode.currentPoints);
+        console.log('total points before click:', this.state.totalPoints);
+      
+        if (updatedNode.currentPoints < updatedNode.maxPoints) {
+          if (
+            (updatedNode.tier < 5 || this.state.totalPoints >= 8) &&
+            (updatedNode.tier < 8 || this.state.totalPoints >= 20) &&
+            (updatedNode.status === 'available' || updatedNode.status === 'active')
+          ) {
+            updatedNode.currentPoints++;
+            this.incrementTotalPoints()
+
+          } else {
+            console.log('spend more points!');
+          }
+        }
+      
+        console.log('total points after click:', this.state.totalPoints);
+      
+        if (updatedNode.currentPoints > 0) {
+          updatedNode.status = 'active';
+          if (updatedNode.children) {
+            updatedNode.children.forEach((childId) => {
+              const childNode = this.getNodeDataById(childId);
+              if (childNode) {
+                childNode.status = 'available';
+              }
+            });
+          }
+        }
+      
+        console.log('node points after click:', updatedNode.currentPoints);
+      
+        // Find the index of the clicked node in the nodes array
+        const nodeIndex = updatedData.nodes.findIndex((node) => node.id === nodeId);
+      
+        // Replace the old node with the updated node in the nodes array
+        if (nodeIndex !== -1) {
+          updatedData.nodes[nodeIndex] = updatedNode;
+        }
+      
+        this.setState((prevState) => ({
+          data: updatedData,
+        }));
+    };
+
+    onRightClickNode = (event, nodeId, nodeDatum) => {
+        event.preventDefault();
+        const updatedData = { ...this.state.data }; // Make a copy of the original data
+        const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
+      
+        console.log('node current points:', updatedNode.currentPoints);
+        console.log('total points before click:', this.state.totalPoints);
+      
+        if(updatedNode.currentPoints > 0) {
+            updatedNode.currentPoints--
+            this.decrementTotalPoints()
+        }
+      
+        console.log('total points after click:', this.state.totalPoints);
+      
+        if(updatedNode.currentPoints === 0) {
+            updatedNode.status = 'available'
+            if(updatedNode.children) {
+                updatedNode.children.forEach((childId) => {
+                    const childNode = this.getNodeDataById(childId);
+                    if (childNode) {
+                      childNode.status = 'unavailable';
+                    }
+                });
+            }
+        }
+      
+        console.log('node points after click:', updatedNode.currentPoints);
+      
+        // Find the index of the clicked node in the nodes array
+        const nodeIndex = updatedData.nodes.findIndex((node) => node.id === nodeId);
+      
+        // Replace the old node with the updated node in the nodes array
+        if (nodeIndex !== -1) {
+          updatedData.nodes[nodeIndex] = updatedNode;
+        }
+      
+        this.setState((prevState) => ({
+          data: updatedData,
+        }));
+    }
+
     render() {    
         this.updateLinkPaths()    
         return (
@@ -130,6 +248,8 @@ class TalentTree extends Component {
                     id={this.state.id}
                     data={this.state.data}
                     config={this.state.config}
+                    onClickNode={this.onClickNode}
+                    onRightClickNode={this.onRightClickNode}
                 />
             </div>
         );
