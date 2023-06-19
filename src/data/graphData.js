@@ -21,6 +21,7 @@ export const graphData = {
             talentRequirements: [""],
             activeLinks: 0,
             children: ["Shield Slam", "Earth Shock", "Earthen Strike"],
+            descendants: ["Shield Slam", "Earth Shock", "Earthen Strike", "Violent Lightning", "Ice Cold Water", "Rumble", " Sundering", "Hotheaded", "Rock Splinters", "Evoke the Storm", "Chains of Devastation", "Emerald Totem - Earthen Wall Totem", "Molten Cleave", "Volcanic Eruption", "Wind Whisperer", "Deflector Totem", "River Walker", "Rock Shatter", "Magma Blood", "Mountain Walker", "Tempest", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
 
         },
         {
@@ -40,6 +41,7 @@ export const graphData = {
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
             children: ["Violent Lightning", "Ice Cold Water"],
+            descendants: ["Violent Lightning", "Ice Cold Water", "Evoke the Storm", "Chains of Devastation", "Emerald Totem - Earthen Wall Totem", "Wind Whisperer", "Deflector Totem", "River Walker", "Rock Shatter", "Tempest", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
         },
         {
             id: "Earth Shock",
@@ -54,10 +56,13 @@ export const graphData = {
             status: 'unavailable',
             description: "Instantly shocks the target with concussive force, causing nature damage. [Earth Shock] will consume all stacks of [Fulmination] (max 20) for additional damage. Blocks, Parries, Absorbs, and [Earthen Strike] all add a stack of [Fulmination].",
             children: ["Rumble", "Sundering"],
+            descendants: ["Rumble", " Sundering", "Emerald Totem - Earthen Wall Totem", "Molten Cleave", "River Walker", "Rock Shatter", "Magma Blood", "Mountain Walker", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
             x: 7*columnWidth,
             y: 2*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Rumble", " Sundering", "Emerald Totem - Earthen Wall Totem", "Molten Cleave", "River Walker", "Rock Shatter", "Magma Blood", "Mountain Walker", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Earthen Strike",
@@ -76,6 +81,7 @@ export const graphData = {
             y: 2*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Hotheaded", "Rock Splinters", "Molten Cleave", "Volcanic Eruption", "Rock Shatter", "Magma Blood", "Mountain Walker", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
         },
         {
             id: "Violent Lightning",
@@ -93,6 +99,8 @@ export const graphData = {
             y: 3*rowHeight,
             talentRequirements: ["Boulder Toss", "Shield Slam"],
             activeLinks: 0,
+            descendants: ["Evoke the Storm", "Chains of Devastation", "Wind Whisperer", "Deflector Totem", "River Walker", "Tempest", "Kindred Spirits", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden"],
+
         },
         {
             id: "Ice Cold Water",
@@ -110,6 +118,7 @@ export const graphData = {
             y: 3*rowHeight,
             talentRequirements: ["Boulder Toss", "Shield Slam"],
             activeLinks: 0,
+            descendants: ["Chains of Devastation", "Emerald Totem - Earthen Wall Totem", "Deflector Totem", "River Walker", "Rock Shatter", "Tempest", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
         },
         {
             id: "Rumble",
@@ -127,6 +136,8 @@ export const graphData = {
             y: 3*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Emerald Totem - Earthen Wall Totem", "River Walker", "Rock Shatter", "Magma Blood", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Sundering",
@@ -145,6 +156,8 @@ export const graphData = {
             y: 3*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Emerald Totem - Earthen Wall Totem", "Molten Cleave", "River Walker", "Rock Shatter", "Magma Blood", "Mountain Walker", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Hotheaded",
@@ -162,6 +175,8 @@ export const graphData = {
             y: 3*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Molten Cleave", "Volcanic Eruption", "Rock Shatter", "Magma Blood", "Mountain Walker", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Rock Splinters",
@@ -179,6 +194,8 @@ export const graphData = {
             y: 3*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Volcanic Eruption", "Mountain Walker", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Emerald Totem - Earthen Wall Totem",
@@ -202,6 +219,8 @@ export const graphData = {
             y: 4*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["River Walker", "Rock Shatter", "Magma Blood", "Kindred Spirits", "Boon of the Ascended - Ancestral Protection Totem", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Evoke the Storm",
@@ -219,6 +238,8 @@ export const graphData = {
             y: 4*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Wind Whisperer", "Deflector Totem", "Tempest", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Elemental Inspiration", "Elemental Embrace", "Chain Harvest", "Elementalist", "Channeler", "Elemental Conduit", "Emerald Encapsulation"],
+
         },
         {
             id: "Chains of Devastation",
@@ -238,6 +259,8 @@ export const graphData = {
             y: 4*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Deflector Totem", "River Walker", "Tempest", "Kindred Spirits", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden"],
+
         },
         {
             id: "Molten Cleave",
@@ -256,6 +279,8 @@ export const graphData = {
             y: 4*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Rock Shatter", "Magma Blood", "Mountain Walker", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Volcanic Eruption",
@@ -273,6 +298,7 @@ export const graphData = {
             y: 4*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Mountain Walker", "Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
         },
         {
             id: "Wind Whisperer",
@@ -290,6 +316,8 @@ export const graphData = {
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Tempest", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Elemental Inspiration", "Elemental Embrace", "Chain Harvest", "Elementalist", "Channeler", "Elemental Conduit", "Emerald Encapsulation"],
+
         },
         {
             id: "Deflector Totem",
@@ -308,6 +336,8 @@ export const graphData = {
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Tempest", "Choking Winds - Storm Shock", "Deluge and Drizzle", "Elemental Inspiration", "Elemental Embrace", "Chain Harvest", "Elementalist", "Channeler", "Elemental Conduit", "Emerald Encapsulation",],
+
         },
         {
             id: "River Walker",
@@ -325,6 +355,8 @@ export const graphData = {
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Kindred Spirits", "Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden"],
+
         },
         {
             id: "Rock Shatter",
@@ -342,6 +374,8 @@ export const graphData = {
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Boon of the Ascended - Ancestral Protection Totem", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Magma Blood",
@@ -359,6 +393,7 @@ export const graphData = {
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: [],
         },
         {
             id: "Mountain Walker",
@@ -376,6 +411,7 @@ export const graphData = {
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Boon of the Ascended - Ancestral Protection Totem", "Deeptremor Stone", "Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Emerald Elemental", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
         },
         {
             id: "Tempest",
@@ -394,6 +430,8 @@ export const graphData = {
             y: 6*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Choking Winds - Storm Shock", "Deluge and Drizzle", "Elemental Inspiration", "Elemental Embrace", "Chain Harvest", "Elementalist", "Channeler", "Elemental Conduit", "Emerald Encapsulation",],
+
         },
         {
             id: "Kindred Spirits",
@@ -412,6 +450,8 @@ export const graphData = {
             y: 6*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Deluge and Drizzle", "Spiritual Attunement - Earthen Attunement", "Elemental Inspiration", "Elemental Embrace", "Cosmic Shields", "Chain Harvest", "Elementalist", "Channeler", "Blessing of the Stonewall", "Elemental Conduit", "Emerald Encapsulation", "The Way of the Warden"],
+
         },
         {
             id: "Boon of the Ascended - Ancestral Protection Totem",
@@ -430,6 +470,8 @@ export const graphData = {
             y: 6*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Spiritual Attunement - Earthen Attunement", "Spiritual Determination", "Elemental Embrace", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Elementalist", "Channeler", "Blessing of the Stonewall", "Clay to Rock", "Emerald Encapsulation", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Deeptremor Stone",
@@ -447,6 +489,8 @@ export const graphData = {
             y: 6*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Spiritual Determination", "Emerald Elemental", "Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Blessing of the Stonewall", "Clay to Rock", "The Way of the Warden", "Storm of the Ascended"],
+
         },
         {
             id: "Choking Winds - Storm Shock",
@@ -464,6 +508,8 @@ export const graphData = {
             y: 7*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Elemental Inspiration", "Elemental Embrace", "Chain Harvest", "Elementalist", "Channeler", "Elemental Conduit", "Emerald Encapsulation",],
+
         },
         {
             id: "Deluge and Drizzle",
@@ -481,6 +527,8 @@ export const graphData = {
             y: 7*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Elemental Inspiration", "Elemental Embrace", "Chain Harvest", "Elementalist", "Channeler", "Elemental Conduit", "Emerald Encapsulation",],
+
         },
         {
             id: "Spiritual Attunement - Earthen Attunement",
@@ -498,6 +546,8 @@ export const graphData = {
             y: 7*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Elemental Embrace", "Cosmic Shields", "Elementalist", "Channeler", "Blessing of the Stonewall", "Emerald Encapsulation", "The Way of the Warden"],
+
         },
         {
             id: "Spiritual Determination",
@@ -515,6 +565,7 @@ export const graphData = {
             y: 7*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Cosmic Shields", "Ascendance - Deeply Rooted Elements", "Blessing of the Stonewall", "Clay to Rock", "The Way of the Warden", "Storm of the Ascended"],
         },
         {
             id: "Emerald Elemental",
@@ -533,6 +584,8 @@ export const graphData = {
             y: 7*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Ascendance - Deeply Rooted Elements", "Clay to Rock", "Storm of the Ascended"],
+
         },
         {
             id: "Elemental Inspiration",
@@ -550,6 +603,8 @@ export const graphData = {
             y: 8*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Chain Harvest", "Elemental Conduit"],
+
         },
         {
             id: "Elemental Embrace",
@@ -568,6 +623,8 @@ export const graphData = {
             y: 8*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Elementalist", "Channeler", "Emerald Encapsulation",],
+
         },
         {
             id: "Cosmic Shields",
@@ -585,6 +642,7 @@ export const graphData = {
             y: 8*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Blessing of the Stonewall", "The Way of the Warden"]
         },
         {
             id: "Ascendance - Deeply Rooted Elements",
@@ -602,6 +660,7 @@ export const graphData = {
             y: 8*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Clay to Rock", "Storm of the Ascended"],
         },
         {
             id: "Chain Harvest",
@@ -620,6 +679,7 @@ export const graphData = {
             y: 9*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Elemental Conduit"],
         },
         {
             id: "Elementalist",
@@ -637,6 +697,7 @@ export const graphData = {
             y: 9*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Emerald Encapsulation"],
         },
         {
             id: "Channeler",
@@ -654,6 +715,7 @@ export const graphData = {
             y: 9*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Emerald Encapsulation"],
         },
         {
             id: "Blessing of the Stonewall",
@@ -671,6 +733,7 @@ export const graphData = {
             y: 9*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["The Way of the Warden"],
         },
         {
             id: "Clay to Rock",
@@ -688,6 +751,7 @@ export const graphData = {
             y: 9*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: ["Storm of the Ascended"],
         },
         {
             id: "Elemental Conduit",
@@ -705,6 +769,7 @@ export const graphData = {
             y: 10*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: [],
         },
         {
             id: "Emerald Encapsulation",
@@ -723,6 +788,7 @@ export const graphData = {
             y: 10*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: [],
         },
         {
             id: "The Way of the Warden",
@@ -740,6 +806,7 @@ export const graphData = {
             y: 10*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: [],
         },
         {
             id: "Storm of the Ascended",
@@ -757,12 +824,13 @@ export const graphData = {
             y: 10*rowHeight,
             talentRequirements: ["Boulder Toss"],
             activeLinks: 0,
+            descendants: [],
         },
     ],
     links: [
-        {source: "Boulder Toss", target: "Shield Slam"},
-        {source: "Boulder Toss", target: "Earth Shock"},
-        {source: "Boulder Toss", target: "Earthen Strike"},
+        {source: "Boulder Toss", target: "Shield Slam", path: "Boulder Toss->Shield Slam", active: true},
+        {source: "Boulder Toss", target: "Earth Shock", path: "Boulder Toss->Earth Shock", active: true},
+        {source: "Boulder Toss", target: "Earthen Strike", path: "Boulder Toss->Earthen Strike", active: true},
         {source: "Shield Slam", target: "Violent Lightning"},
         {source: "Shield Slam", target: "Ice Cold Water"},
         {source: "Earth Shock", target: "Rumble"},

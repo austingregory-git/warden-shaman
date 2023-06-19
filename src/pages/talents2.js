@@ -95,6 +95,19 @@ class TalentTree extends Component {
             totalPoints: prevState.totalPoints - 1,
         }));
     }
+
+    updateTotalPoints() {
+        var points = 0;
+        const nodes = this.state.data.nodes;
+        if (nodes) {
+            nodes.forEach((node) => {
+              points += node.currentPoints;
+            });
+        }
+        this.setState((prevState) => ({
+            totalPoints: points,
+        }));
+    }
     
     updateLinkPaths() {
         const links = this.state.data.links
@@ -112,6 +125,12 @@ class TalentTree extends Component {
             RenderCustomNode(node)
           });
         }
+    }
+
+    resetTalentTree() {
+        this.setState({
+            data: graphData
+        })
     }
 
     getNodeDataById(nodeId) {
@@ -175,7 +194,7 @@ class TalentTree extends Component {
           if (updatedNode.children) {
             updatedNode.children.forEach((childId) => {
               const childNode = this.getNodeDataById(childId);
-              if (childNode) {
+              if (childNode && childNode.status !== 'active') {
                 childNode.status = 'available';
               }
             });
@@ -207,7 +226,7 @@ class TalentTree extends Component {
       
         if(updatedNode.currentPoints > 0) {
             updatedNode.currentPoints--
-            this.decrementTotalPoints()
+            //this.decrementTotalPoints()
         }
       
         console.log('total points after click:', this.state.totalPoints);
@@ -218,7 +237,21 @@ class TalentTree extends Component {
                 updatedNode.children.forEach((childId) => {
                     const childNode = this.getNodeDataById(childId);
                     if (childNode) {
-                      childNode.status = 'unavailable';
+                        childNode.currentPoints = 0;
+                        childNode.status = 'unavailable';
+                    }
+                });
+            }
+        }
+
+        if(updatedNode.currentPoints === 0) {
+            updatedNode.status = 'available'
+            if(updatedNode.descendants) {
+                updatedNode.descendants.forEach((childId) => {
+                    const descendantNode = this.getNodeDataById(childId);
+                    if (descendantNode) {
+                        descendantNode.currentPoints = 0;
+                        descendantNode.status = 'unavailable';
                     }
                 });
             }
@@ -237,6 +270,8 @@ class TalentTree extends Component {
         this.setState((prevState) => ({
           data: updatedData,
         }));
+
+        this.updateTotalPoints()
     }
 
     render() {    
