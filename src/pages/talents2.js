@@ -183,7 +183,6 @@ class TalentTree extends Component {
       
         console.log('total points after click:', this.state.totalPoints);
       
-        //TODO 2 point nodes are adding 2 links
         if (updatedNode.currentPoints > 0) {
           updatedNode.status = 'active';
           if (updatedNode.children) {
@@ -217,15 +216,15 @@ class TalentTree extends Component {
         const updatedData = { ...this.state.data }; // Make a copy of the original data
         const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
       
-        console.log('node current points:', updatedNode.currentPoints);
-        console.log('total points before click:', this.state.totalPoints);
+        //console.log('node current points:', updatedNode.currentPoints);
+        //console.log('total points before click:', this.state.totalPoints);
       
         if(updatedNode.currentPoints > 0) {
             updatedNode.currentPoints--
-            //this.decrementTotalPoints()
+            this.decrementTotalPoints()
         }
       
-        console.log('total points after click:', this.state.totalPoints);
+        //console.log('total points after click:', this.state.totalPoints);
       
         //TODO make child unavailable but not descendants 
         // if(updatedNode.currentPoints === 0) {
@@ -234,31 +233,71 @@ class TalentTree extends Component {
         //         updatedNode.children.forEach((childId) => {
         //             const childNode = this.getNodeDataById(childId);
         //             if (childNode) {
-        //                 childNode.currentPoints = 0;
-        //                 childNode.status = 'unavailable';
+        //                 childNode.activeLinks--;
         //             }
         //         });
         //     }
         // }
 
         //TODO active links from root only decrease by 1... so multiple links will not remove points
+        // if(updatedNode.currentPoints === 0) {
+        //     updatedNode.status = 'available'
+        //     if(updatedNode.descendants) {
+        //         updatedNode.descendants.forEach((descendantId) => {
+        //             const descendantNode = this.getNodeDataById(descendantId);
+        //             if (descendantNode) {
+        //                 descendantNode.activeLinks--;
+        //                 if(descendantNode.activeLinks === 0) {
+        //                     descendantNode.currentPoints = 0;
+        //                     descendantNode.status = 'unavailable';
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
+
         if(updatedNode.currentPoints === 0) {
             updatedNode.status = 'available'
             if(updatedNode.descendants) {
-                updatedNode.descendants.forEach((childId) => {
-                    const descendantNode = this.getNodeDataById(childId);
+                updatedNode.descendants.forEach((descendantId) => {
+                    const descendantNode = this.getNodeDataById(descendantId);
                     if (descendantNode) {
-                        descendantNode.activeLinks--;
-                        if(descendantNode.activeLinks === 0) {
-                            descendantNode.currentPoints = 0;
-                            descendantNode.status = 'unavailable';
-                        }
+                        descendantNode.currentPoints = 0;
+                        descendantNode.status = 'unavailable';
                     }
                 });
             }
         }
+
+        // if(updatedNode.currentPoints === 0) {
+        //     updatedNode.status = 'available'
+        //     if(updatedNode.descendants) {
+        //         updatedNode.descendants.forEach((descendantId) => {
+        //             const descendantNode = this.getNodeDataById(descendantId);
+        //             if (descendantNode) {
+        //                 if(descendantNode.children) {
+        //                     descendantNode.children.forEach((childId) => {
+        //                         const childNode = this.getNodeDataById(childId);
+        //                         if (childNode && descendantNode.status === 'active') {
+        //                             console.log(childNode.activeLinks)
+        //                             childNode.activeLinks--;
+        //                             childNode.currentPoints = 0;
+        //                             childNode.status = 'unavailable';
+        //                             console.log(childNode)
+        //                             console.log(childNode.activeLinks)
+        //                         }
+        //                     });
+        //                 }
+        //                 if(descendantNode.activeLinks === 0) {
+        //                     descendantNode.currentPoints = 0;
+        //                     descendantNode.status = 'unavailable';
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
       
-        console.log('node points after click:', updatedNode.currentPoints);
+        //console.log('node points after click:', updatedNode.currentPoints);
       
         // Find the index of the clicked node in the nodes array
         const nodeIndex = updatedData.nodes.findIndex((node) => node.id === nodeId);
