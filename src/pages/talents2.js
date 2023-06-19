@@ -183,6 +183,7 @@ class TalentTree extends Component {
       
         console.log('total points after click:', this.state.totalPoints);
       
+        //TODO 2 point nodes are adding 2 links
         if (updatedNode.currentPoints > 0) {
           updatedNode.status = 'active';
           if (updatedNode.children) {
@@ -226,6 +227,21 @@ class TalentTree extends Component {
       
         console.log('total points after click:', this.state.totalPoints);
       
+        //TODO make child unavailable but not descendants 
+        // if(updatedNode.currentPoints === 0) {
+        //     updatedNode.status = 'available'
+        //     if(updatedNode.children) {
+        //         updatedNode.children.forEach((childId) => {
+        //             const childNode = this.getNodeDataById(childId);
+        //             if (childNode) {
+        //                 childNode.currentPoints = 0;
+        //                 childNode.status = 'unavailable';
+        //             }
+        //         });
+        //     }
+        // }
+
+        //TODO active links from root only decrease by 1... so multiple links will not remove points
         if(updatedNode.currentPoints === 0) {
             updatedNode.status = 'available'
             if(updatedNode.descendants) {

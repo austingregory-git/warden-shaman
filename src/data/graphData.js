@@ -369,7 +369,7 @@ export const graphData = {
             tier: 5,
             status: 'unavailable',
             description: "While [Rock Shield] is active, taking damage and casting abilities has a 4/6% chance to grant 4/6 charges of [Earth Shield] and deals damage to enemies within an 8 yard radius (2 second internal CD on damage taken).",
-            children: ["Kindred Spirits"],
+            children: ["Boon of the Ascended - Ancestral Protection Totem"],
             x: 7*columnWidth,
             y: 5*rowHeight,
             talentRequirements: ["Boulder Toss"],
