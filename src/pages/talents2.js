@@ -127,12 +127,6 @@ class TalentTree extends Component {
         }
     }
 
-    resetTalentTree() {
-        this.setState({
-            data: graphData
-        })
-    }
-
     getNodeDataById(nodeId) {
         const { data } = this.state;
         const node = data.nodes.find((node) => node.id === nodeId);
@@ -196,6 +190,7 @@ class TalentTree extends Component {
               const childNode = this.getNodeDataById(childId);
               if (childNode && childNode.status !== 'active') {
                 childNode.status = 'available';
+                childNode.activeLinks++;
               }
             });
           }
@@ -233,25 +228,15 @@ class TalentTree extends Component {
       
         if(updatedNode.currentPoints === 0) {
             updatedNode.status = 'available'
-            if(updatedNode.children) {
-                updatedNode.children.forEach((childId) => {
-                    const childNode = this.getNodeDataById(childId);
-                    if (childNode) {
-                        childNode.currentPoints = 0;
-                        childNode.status = 'unavailable';
-                    }
-                });
-            }
-        }
-
-        if(updatedNode.currentPoints === 0) {
-            updatedNode.status = 'available'
             if(updatedNode.descendants) {
                 updatedNode.descendants.forEach((childId) => {
                     const descendantNode = this.getNodeDataById(childId);
                     if (descendantNode) {
-                        descendantNode.currentPoints = 0;
-                        descendantNode.status = 'unavailable';
+                        descendantNode.activeLinks--;
+                        if(descendantNode.activeLinks === 0) {
+                            descendantNode.currentPoints = 0;
+                            descendantNode.status = 'unavailable';
+                        }
                     }
                 });
             }
