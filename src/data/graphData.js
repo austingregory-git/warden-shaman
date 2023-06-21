@@ -465,7 +465,7 @@ export const graphData = {
             tier: 6,
             status: 'unavailable',
             description: "When you [Reincarnate], spawn with 80% health, taunt all enemies within 20 yards, and take 20% reduced damage for 8 seconds.",
-            children: ["Spiritual Attunement - Earthen Attunement", "Cosmic Shields"],
+            children: ["Spiritual Attunement - Earthen Attunement", "Spiritual Determination"],
             x: 9*columnWidth,
             y: 6*rowHeight,
             talentRequirements: ["Boulder Toss"],

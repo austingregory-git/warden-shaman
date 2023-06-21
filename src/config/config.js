@@ -5,6 +5,7 @@ export const config = {
     height: "100vh",
     nodeHighlightBehavior: true,
     staticGraph: true,
+    panAndZoom: true,
     node: {
       renderLabel: false, 
       symbolType: "circle",

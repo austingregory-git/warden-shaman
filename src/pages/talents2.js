@@ -5,10 +5,6 @@ import {config} from "../config/config.js"
 import { Tooltip } from '@mui/material';
 import './talents.css';
 import background from "./WardenShamanBackground.PNG";
-// import { withAlert, Provider as AlertProvider } from 'react-alert';
-// import Alert from "@material-ui/lab/Alert";
-// import AlertTitle from "@material-ui/lab/AlertTitle";
-// import AlertTemplate from 'react-alert-template-basic';
 
 const MAXIMUM_POINTS = 30;
 const TIER_5_POINT_THRESHOLD = 8;
@@ -34,6 +30,10 @@ export function RenderCustomNode({nodeDatum}) {
 }
 
 const generateTooltip = (nodeDatum) => {
+  //todo generate tooltip for choice node
+  if(nodeDatum.type === 'choice') {
+
+  }
   const abilityDetails = nodeDatum.abilityDetails === undefined ? "" : nodeDatum.abilityDetails.join('\n') + '\n'
   const name = nodeDatum.name + '\n'
   const requirements = nodeDatum.requirements.join('\n') + '\n'
@@ -95,7 +95,7 @@ class TalentTree extends Component {
     }  
 
     // componentDidMount() {
-    //     this.props.alert.show("hello");
+    //     alert("hi")
     // }
 
     // componentDidUpdate() {
@@ -179,12 +179,7 @@ class TalentTree extends Component {
     onClickNode = (nodeId, nodeDatum) => {
         const updatedData = { ...this.state.data }; // Make a copy of the original data
         const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
-        const insufficentPointsAlert = "hello"
-        
-          // <Alert severity="warning" className="alert">
-          //   <AlertTitle>Insufficent Points</AlertTitle>
-          //     Spend {TIER_5_POINT_THRESHOLD - this.totalPoints} more points to unlock this tier!
-          // </Alert>;     
+
         if (updatedNode.currentPoints < updatedNode.maxPoints) {
           if (
             (updatedNode.tier < 5 || this.state.totalPoints >= 8) &&
@@ -196,9 +191,17 @@ class TalentTree extends Component {
             this.incrementTotalPoints()
 
           } else {
-              var pointsNeeded = TIER_5_POINT_THRESHOLD-this.state.totalPoints
-              window.alert("Spend " + pointsNeeded + " more points to unlock the next tier")
-              console.log('spend more points!');
+              if(updatedNode.tier >= 5 && updatedNode.tier < 8 && this.state.totalPoints < MAXIMUM_POINTS && (updatedNode.status === 'available' || updatedNode.status === 'active')) {
+                var pointsNeeded = TIER_5_POINT_THRESHOLD-this.state.totalPoints
+                window.alert("Spend " + pointsNeeded + " more points to unlock the next tier.")
+              }
+              else if (updatedNode.tier >= 8 && this.state.totalPoints < MAXIMUM_POINTS && (updatedNode.status === 'available' || updatedNode.status === 'active')) {
+                var pointsNeeded = TIER_8_POINT_THRESHOLD-this.state.totalPoints
+                window.alert("Spend " + pointsNeeded + " more points to unlock the next tier.")
+              }
+              else if(this.state.totalPoints === MAXIMUM_POINTS) {
+                window.alert("You have used the maximum number of points. Right click a talent to unselect it.")
+              }
           }
         }
       
@@ -272,31 +275,31 @@ class TalentTree extends Component {
         this.updateLinkPaths()    
           return (
             <div style={containerStyles} >
-            <div className='bar-separator'></div>
-            <div className='talent-graph-bar'>
-              <h2 className='shaman-text'>
-                Points Spent: 
-              </h2>
-              <h2 className='points'>
-                {this.state.totalPoints}/{MAXIMUM_POINTS}
-              </h2>
-              <h2 className='shaman-text gap'>
-                Level Required:
-              </h2>
-              <h2 className='points'>
-                {(this.state.totalPoints*2) + 9} 
-              </h2>
-                
+              <div className='bar-separator'></div>
+              <div className='talent-graph-bar'>
+                <h2 className='shaman-text'>
+                  Points Spent: 
+                </h2>
+                <h2 className='points'>
+                  {this.state.totalPoints}/{MAXIMUM_POINTS}
+                </h2>
+                <h2 className='shaman-text gap'>
+                  Level Required:
+                </h2>
+                <h2 className='points'>
+                  {(this.state.totalPoints*2) + 9} 
+                </h2>
+                  
+              </div>
+              <Graph
+                    ref={this.graphRef} 
+                    id={this.state.id}
+                    data={this.state.data}
+                    config={this.state.config}
+                    onClickNode={this.onClickNode}
+                    onRightClickNode={this.onRightClickNode}
+                />
             </div>
-            <Graph
-                  ref={this.graphRef} 
-                  id={this.state.id}
-                  data={this.state.data}
-                  config={this.state.config}
-                  onClickNode={this.onClickNode}
-                  onRightClickNode={this.onRightClickNode}
-              />
-          </div>
         );
     }
   }
