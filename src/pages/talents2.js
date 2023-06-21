@@ -5,11 +5,17 @@ import {config} from "../config/config.js"
 import { Tooltip } from '@mui/material';
 import './talents.css';
 import background from "./WardenShamanBackground.PNG";
-import * as d3 from 'd3';
+// import { withAlert, Provider as AlertProvider } from 'react-alert';
+// import Alert from "@material-ui/lab/Alert";
+// import AlertTitle from "@material-ui/lab/AlertTitle";
+// import AlertTemplate from 'react-alert-template-basic';
 
-const nodeSize = { x:56, y:56}
+const MAXIMUM_POINTS = 30;
+const TIER_5_POINT_THRESHOLD = 8;
+const TIER_8_POINT_THRESHOLD = 20;
+const nodeSize = { x:56, y:56};
 //const nodeSize = {x: window.innerWidth/15, y: window.innerHeight/15}
-const borderWidth = 4
+const borderWidth = 4;
 const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
 
 export function RenderCustomNode({nodeDatum}) {
@@ -27,9 +33,19 @@ export function RenderCustomNode({nodeDatum}) {
     )
 }
 
+const generateTooltip = (nodeDatum) => {
+  const abilityDetails = nodeDatum.abilityDetails === undefined ? "" : nodeDatum.abilityDetails.join('\n') + '\n'
+  const name = nodeDatum.name + '\n'
+  const requirements = nodeDatum.requirements.join('\n') + '\n'
+  const description = nodeDatum.description
+  const tooltip = name + abilityDetails + requirements + description
+  return tooltip;
+}
+
 const containerStyles = {
     width: "100vw",
-    height: "100vh",
+    //height: "100vh",
+    height: "calc(100% - 56px)",
     background: "#eee",
     backgroundImage: `url(${background})`,
     backgroundRepeat: 'no-repeat',
@@ -39,7 +55,7 @@ const containerStyles = {
 const imageStyle = {
     width: "75%",
     height: "75%",
-}
+};
 
 const handleNodeStyle = (status) => {
     if (status === 'available') {
@@ -57,7 +73,7 @@ const handleNodeStyle = (status) => {
     }
     else if(status === 'active')
       return {
-        border: '4px solid yellow',
+        border: '4px solid #ffd100',
         height: nodeSize.y,
         width: nodeSize.x
     }
@@ -79,7 +95,7 @@ class TalentTree extends Component {
     }  
 
     // componentDidMount() {
-    //     this.updateLinkPaths();
+    //     this.props.alert.show("hello");
     // }
 
     // componentDidUpdate() {
@@ -163,25 +179,28 @@ class TalentTree extends Component {
     onClickNode = (nodeId, nodeDatum) => {
         const updatedData = { ...this.state.data }; // Make a copy of the original data
         const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
-      
-        console.log('node current points:', updatedNode.currentPoints);
-        console.log('total points before click:', this.state.totalPoints);
-      
+        const insufficentPointsAlert = "hello"
+        
+          // <Alert severity="warning" className="alert">
+          //   <AlertTitle>Insufficent Points</AlertTitle>
+          //     Spend {TIER_5_POINT_THRESHOLD - this.totalPoints} more points to unlock this tier!
+          // </Alert>;     
         if (updatedNode.currentPoints < updatedNode.maxPoints) {
           if (
             (updatedNode.tier < 5 || this.state.totalPoints >= 8) &&
             (updatedNode.tier < 8 || this.state.totalPoints >= 20) &&
-            (updatedNode.status === 'available' || updatedNode.status === 'active')
+            (updatedNode.status === 'available' || updatedNode.status === 'active') &&
+            this.state.totalPoints < MAXIMUM_POINTS
           ) {
             updatedNode.currentPoints++;
             this.incrementTotalPoints()
 
           } else {
-            console.log('spend more points!');
+              var pointsNeeded = TIER_5_POINT_THRESHOLD-this.state.totalPoints
+              window.alert("Spend " + pointsNeeded + " more points to unlock the next tier")
+              console.log('spend more points!');
           }
         }
-      
-        console.log('total points after click:', this.state.totalPoints);
       
         if (updatedNode.currentPoints > 0) {
           updatedNode.status = 'active';
@@ -216,45 +235,10 @@ class TalentTree extends Component {
         const updatedData = { ...this.state.data }; // Make a copy of the original data
         const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
       
-        //console.log('node current points:', updatedNode.currentPoints);
-        //console.log('total points before click:', this.state.totalPoints);
-      
         if(updatedNode.currentPoints > 0) {
             updatedNode.currentPoints--
             this.decrementTotalPoints()
         }
-      
-        //console.log('total points after click:', this.state.totalPoints);
-      
-        //TODO make child unavailable but not descendants 
-        // if(updatedNode.currentPoints === 0) {
-        //     updatedNode.status = 'available'
-        //     if(updatedNode.children) {
-        //         updatedNode.children.forEach((childId) => {
-        //             const childNode = this.getNodeDataById(childId);
-        //             if (childNode) {
-        //                 childNode.activeLinks--;
-        //             }
-        //         });
-        //     }
-        // }
-
-        //TODO active links from root only decrease by 1... so multiple links will not remove points
-        // if(updatedNode.currentPoints === 0) {
-        //     updatedNode.status = 'available'
-        //     if(updatedNode.descendants) {
-        //         updatedNode.descendants.forEach((descendantId) => {
-        //             const descendantNode = this.getNodeDataById(descendantId);
-        //             if (descendantNode) {
-        //                 descendantNode.activeLinks--;
-        //                 if(descendantNode.activeLinks === 0) {
-        //                     descendantNode.currentPoints = 0;
-        //                     descendantNode.status = 'unavailable';
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }
 
         if(updatedNode.currentPoints === 0) {
             updatedNode.status = 'available'
@@ -268,36 +252,6 @@ class TalentTree extends Component {
                 });
             }
         }
-
-        // if(updatedNode.currentPoints === 0) {
-        //     updatedNode.status = 'available'
-        //     if(updatedNode.descendants) {
-        //         updatedNode.descendants.forEach((descendantId) => {
-        //             const descendantNode = this.getNodeDataById(descendantId);
-        //             if (descendantNode) {
-        //                 if(descendantNode.children) {
-        //                     descendantNode.children.forEach((childId) => {
-        //                         const childNode = this.getNodeDataById(childId);
-        //                         if (childNode && descendantNode.status === 'active') {
-        //                             console.log(childNode.activeLinks)
-        //                             childNode.activeLinks--;
-        //                             childNode.currentPoints = 0;
-        //                             childNode.status = 'unavailable';
-        //                             console.log(childNode)
-        //                             console.log(childNode.activeLinks)
-        //                         }
-        //                     });
-        //                 }
-        //                 if(descendantNode.activeLinks === 0) {
-        //                     descendantNode.currentPoints = 0;
-        //                     descendantNode.status = 'unavailable';
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }
-      
-        //console.log('node points after click:', updatedNode.currentPoints);
       
         // Find the index of the clicked node in the nodes array
         const nodeIndex = updatedData.nodes.findIndex((node) => node.id === nodeId);
@@ -316,28 +270,35 @@ class TalentTree extends Component {
 
     render() {    
         this.updateLinkPaths()    
-        return (
+          return (
             <div style={containerStyles} >
-                <Graph
-                    ref={this.graphRef} 
-                    id={this.state.id}
-                    data={this.state.data}
-                    config={this.state.config}
-                    onClickNode={this.onClickNode}
-                    onRightClickNode={this.onRightClickNode}
-                />
+            <div className='bar-separator'></div>
+            <div className='talent-graph-bar'>
+              <h2 className='shaman-text'>
+                Points Spent: 
+              </h2>
+              <h2 className='points'>
+                {this.state.totalPoints}/{MAXIMUM_POINTS}
+              </h2>
+              <h2 className='shaman-text gap'>
+                Level Required:
+              </h2>
+              <h2 className='points'>
+                {(this.state.totalPoints*2) + 9} 
+              </h2>
+                
             </div>
+            <Graph
+                  ref={this.graphRef} 
+                  id={this.state.id}
+                  data={this.state.data}
+                  config={this.state.config}
+                  onClickNode={this.onClickNode}
+                  onRightClickNode={this.onRightClickNode}
+              />
+          </div>
         );
     }
-  }
-  
-  const generateTooltip = (nodeDatum) => {
-    const abilityDetails = nodeDatum.abilityDetails === undefined ? "" : nodeDatum.abilityDetails.join('\n') + '\n'
-    const name = nodeDatum.name + '\n'
-    const requirements = nodeDatum.requirements.join('\n') + '\n'
-    const description = nodeDatum.description
-    const tooltip = name + abilityDetails + requirements + description
-    return tooltip;
   }
   
   export default TalentTree;

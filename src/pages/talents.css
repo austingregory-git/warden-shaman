@@ -1,22 +1,3 @@
-.path {
-    color: #fff;
-    fill: #fff;
-    stroke: #fff;
-    stroke-width: 2;
-}
-
-.rd3t-link.active_path { 
-  fill: yellow;
-  stroke: yellow;
-  stroke-width: 4;
-}
-
-.rd3t-link.inactive_path { 
-  fill: gray;
-  stroke: gray;
-  stroke-width: 4;
-}
-
 .tooltip {
   top: -5px;
   left: 105%;
@@ -59,25 +40,45 @@
   right: 0%;
 }
 
+.shaman-text {
+  font-size: 24px;
+  color: 	#0070DD;
+}
+
 .points {
-  font-size: 12px;
+  font-size: 20px;
   color: white;
-}
-
-.available_border {
-  border: 4px solid limegreen
-}
-
-.chosen_border {
-  border: 4px solid yellow
-}
-
-.unavailable_border {
-  border: 4px solid gray
 }
 
 .graph-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.bar-separator {
+  background-color: #0070DD;
+  height: 2px;
+  width: 100vw;
+}
+
+.talent-graph-bar {
+  background: #15171e;
+  height: 56px;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #15171e;
+  font-size: 18px;
+  font-weight: bold;
+  gap: 6px;
+}
+
+.gap {
+  margin-left: 20px;
+}
+
+.alert {
+  margin-bottom: 16px,
 }

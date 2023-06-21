@@ -16,6 +16,6 @@ export const config = {
     },
     link: {
         strokeWidth: 4,
-        color: "#BADA55",
+        color: "#ffd100",
     },
 }

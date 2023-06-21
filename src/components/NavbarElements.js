@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const Nav = styled.nav`
 background: #15171e;
-height: 60px;
+height: 56px;
 width: 100vw;
 display: flex;
 justify-content: space-between;
@@ -29,7 +29,7 @@ cursor: pointer;
 }
 
 &.active {
-	color: #4d4dff;
+	color: #0070DD;
 }
 `;
 
