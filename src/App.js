@@ -24,16 +24,3 @@ function App() {
 }
  
 export default App;
-
-// import React from "react";
-// import DocViewer from "./pages/doc.js";
-
-// export default function App() {
-//   return (
-//     <div className="App">
-//       <h1>Sample Doc file:</h1>
-//       <DocViewer source="https://docs.google.com/document/d/1_Ou_DofYLw2k8gxFPEouvfDfn4_M2kgx16BYm4Bg_Vc" />
-//     </div>
-//   );
-// }
-

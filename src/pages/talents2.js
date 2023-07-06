@@ -2,21 +2,27 @@ import React, { Component, useEffect, useRef } from 'react';
 import {Graph} from "react-d3-graph";
 import {graphData} from "../data/graphData.js"
 import {config} from "../config/config.js"
-import { Tooltip } from '@mui/material';
 import './talents.css';
 import background from "./WardenShamanBackground.PNG";
+import { styled } from '@mui/material/styles';
+import  Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
 const MAXIMUM_POINTS = 30;
+const NAVBAR_HEIGHT = 56;
 const TIER_5_POINT_THRESHOLD = 8;
 const TIER_8_POINT_THRESHOLD = 20;
 const nodeSize = { x:56, y:56};
 //const nodeSize = {x: window.innerWidth/15, y: window.innerHeight/15}
 const borderWidth = 4;
 const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
+const graphWidth = window.innerWidth-56
+const graphHeight = window.innerHeight-56
+const columnWidth = (graphWidth-(graphWidth/13))/13
+const rowHeight = (graphHeight-(graphHeight/10))/10
 
 export function RenderCustomNode({nodeDatum}) {
     return(
-        <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
+        <ShamanTooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
             <foreignObject {...foreignObjectProps}>
                 <div xmlns='http://www.w3.org/1999/xhtml' style={handleNodeStyle(nodeDatum.status)}>
                         <img src={nodeDatum.image}></img>
@@ -25,9 +31,21 @@ export function RenderCustomNode({nodeDatum}) {
                     {nodeDatum.currentPoints}/{nodeDatum.maxPoints}
                 </div>
             </foreignObject>
-        </Tooltip>
+        </ShamanTooltip>
     )
 }
+
+const ShamanTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "rgba(21, 23, 30, 0.9)",
+    border: "solid #0070DD 2px",
+    color: "#fff",
+    boxShadow: theme.shadows[2],
+    fontSize: 14,
+  },
+}));
 
 const generateTooltip = (nodeDatum) => {
   //todo generate tooltip for choice node
@@ -35,7 +53,7 @@ const generateTooltip = (nodeDatum) => {
 
   }
   const abilityDetails = nodeDatum.abilityDetails === undefined ? "" : nodeDatum.abilityDetails.join('\n') + '\n'
-  const name = nodeDatum.name + '\n'
+  const name = nodeDatum.name + '\n\n'
   const requirements = nodeDatum.requirements.join('\n') + '\n'
   const description = nodeDatum.description
   const tooltip = name + abilityDetails + requirements + description
@@ -51,6 +69,52 @@ const containerStyles = {
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover'
 };
+
+const tier5CheckpointText = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+  fontSize: 16,
+  color: "#FFF",
+
+  top: 4.5*rowHeight+NAVBAR_HEIGHT*2,
+  left: '1%',
+}
+
+const tier8CheckpointText = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+  fontSize: 16,
+  color: "#FFF",
+
+  top: 7.5*rowHeight+NAVBAR_HEIGHT*2,
+  left: '1%',
+}
+
+const tier5CheckpointStyle = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+
+  border: "1px dashed darkgreen",
+  top: 4.6*rowHeight+(NAVBAR_HEIGHT*2),
+  left: '5%',
+  right: '5%',
+  width: "90%",
+}
+
+const tier8CheckpointStyle = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+
+  border: "1px dashed darkgreen",
+  top: 7.6*rowHeight+NAVBAR_HEIGHT*2,
+  left: '5%',
+  right: '5%',
+  width: "90%",
+}
 
 const imageStyle = {
     width: "75%",
@@ -93,10 +157,6 @@ class TalentTree extends Component {
           translateY: window.innerWidth/16,
         };
     }  
-
-    // componentDidMount() {
-    //     alert("hi")
-    // }
 
     // componentDidUpdate() {
     //     this.updateLinkPaths();
@@ -289,8 +349,11 @@ class TalentTree extends Component {
                 <h2 className='points'>
                   {(this.state.totalPoints*2) + 9} 
                 </h2>
-                  
               </div>
+              <div style={tier5CheckpointStyle}></div>
+              <div style={tier5CheckpointText}>8 Required</div>
+              <div style={tier8CheckpointStyle}></div>
+              <div style={tier8CheckpointText}>20 Required</div>
               <Graph
                     ref={this.graphRef} 
                     id={this.state.id}
