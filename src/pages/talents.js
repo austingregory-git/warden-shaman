@@ -1,28 +1,127 @@
-import React, { Component, useEffect } from 'react';
-
-//import {Tree} from "react-tree-graph";
-import Tree from "react-d3-tree";
-import {data} from "../data/data.js"
-import { useCenteredTree } from "../util/helpers";
-//import { TreeLinkDatum, TreeNodeDatum } from 'react-d3-tree/lib/types/types/common.js';
-import { Link, Tooltip } from '@mui/material';
+import React, { Component, useEffect, useRef } from 'react';
+import {Graph} from "react-d3-graph";
+import {graphData} from "../data/graphData.js"
+import {config} from "../config/config.js"
 import './talents.css';
 import background from "./WardenShamanBackground.PNG";
+import { styled } from '@mui/material/styles';
+import  Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
-const nodeSize = { x:56, y:56}
-const borderWidth = 4
+const MAXIMUM_POINTS = 30;
+const NAVBAR_HEIGHT = 56;
+const TIER_5_POINT_THRESHOLD = 8;
+const TIER_8_POINT_THRESHOLD = 20;
+const nodeSize = { x:56, y:56};
+//const nodeSize = {x: window.innerWidth/15, y: window.innerHeight/15}
+const borderWidth = 4;
 const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
+const graphWidth = window.innerWidth-56
+const graphHeight = window.innerHeight-56
+const columnWidth = (graphWidth-(graphWidth/13))/13
+const rowHeight = (graphHeight-(graphHeight/10))/10
+
+export function RenderCustomNode({nodeDatum}) {
+    return(
+        <ShamanTooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
+            <foreignObject {...foreignObjectProps}>
+                <div xmlns='http://www.w3.org/1999/xhtml' style={handleNodeStyle(nodeDatum.status)}>
+                        <img src={nodeDatum.image}></img>
+                </div>
+                <div className='allocated-points'>
+                    {nodeDatum.currentPoints}/{nodeDatum.maxPoints}
+                </div>
+            </foreignObject>
+        </ShamanTooltip>
+    )
+}
+
+const ShamanTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "rgba(21, 23, 30, 0.9)",
+    border: "solid #0070DD 2px",
+    color: "#fff",
+    boxShadow: theme.shadows[2],
+    fontSize: 14,
+  },
+}));
+
+const generateTooltip = (nodeDatum) => {
+  //todo generate tooltip for choice node
+  if(nodeDatum.type === 'choice') {
+
+  }
+  const abilityDetails = nodeDatum.abilityDetails === undefined ? "" : nodeDatum.abilityDetails.join('\n') + '\n'
+  const name = nodeDatum.name + '\n\n'
+  const requirements = nodeDatum.requirements.join('\n') + '\n'
+  const description = nodeDatum.description
+  const tooltip = name + abilityDetails + requirements + description
+  return tooltip;
+}
 
 const containerStyles = {
     width: "100vw",
-    height: "100vh",
+    //height: "100vh",
+    height: "calc(100% - 56px)",
     background: "#eee",
     backgroundImage: `url(${background})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover'
-  };
+};
 
-  const handleNodeStyle = (status) => {
+const tier5CheckpointText = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+  fontSize: 16,
+  color: "#FFF",
+
+  top: 4.5*rowHeight+NAVBAR_HEIGHT*2,
+  left: '1%',
+}
+
+const tier8CheckpointText = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+  fontSize: 16,
+  color: "#FFF",
+
+  top: 7.5*rowHeight+NAVBAR_HEIGHT*2,
+  left: '1%',
+}
+
+const tier5CheckpointStyle = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+
+  border: "1px dashed darkgreen",
+  top: 4.6*rowHeight+(NAVBAR_HEIGHT*2),
+  left: '5%',
+  right: '5%',
+  width: "90%",
+}
+
+const tier8CheckpointStyle = {
+  display: "flex",
+  alignItems: "center",
+  position: "absolute",
+
+  border: "1px dashed darkgreen",
+  top: 7.6*rowHeight+NAVBAR_HEIGHT*2,
+  left: '5%',
+  right: '5%',
+  width: "90%",
+}
+
+const imageStyle = {
+    width: "75%",
+    height: "75%",
+};
+
+const handleNodeStyle = (status) => {
     if (status === 'available') {
      return {
         border: '4px solid limegreen',
@@ -38,294 +137,234 @@ const containerStyles = {
     }
     else if(status === 'active')
       return {
-        border: '4px solid yellow',
+        border: '4px solid #ffd100',
         height: nodeSize.y,
         width: nodeSize.x
     }
     return;
 };
-//...() => getForeignObjectProps
-function renderForeignObjectNode(
-  {nodeDatum, hierarchyPointNode},
-  handleNodeClick,
-  handleNodeRightClick,
-  getForeignObjectProps,
-  updateNode) {
-    // const foreignObjectProps = getForeignObjectProps(nodeDatum)
-    // updateNode(nodeDatum, hierarchyPointNode, foreignObjectProps)
-    return(
-      <Tooltip title={<div style={{whiteSpace: 'pre-line'}}>{generateTooltip(nodeDatum)}</div>} placement="right">
-      <foreignObject {...getForeignObjectProps(nodeDatum, hierarchyPointNode)}>
-        <div xmlns='http://www.w3.org/1999/xhtml' style={handleNodeStyle(nodeDatum.status)}>
-              <img 
-                src={nodeDatum.image} 
-                onClick={() => handleNodeClick(nodeDatum)} 
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  handleNodeRightClick(nodeDatum);
-                }}>
-
-              </img>
-        </div>
-      </foreignObject>
-    </Tooltip>
-    )
-  }
-
-function setPathFunction(linkDatum) {
-  console.log("in path function")
-  const { source, target } = linkDatum;
-  // const source = linkDatum.source
-  // const target = linkDatum.target
-  // console.log(linkDatum)
-  // console.log(linkDatum.source)
-  // console.log(linkDatum.source.x)
-  // console.log(source.x)
-  //source.x = this.rd3tProps.hierarchyPointNode.x
-  //console.log('in path function do we know?: ' + this.state.currentNodeX)
-  if(source.x > target.x)
-    return `M${source.x-nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-  //Target Node is right of the source Node
-  else if(source.x < target.x)
-    return `M${source.x+nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-  //Target Node is aligned with the source Node
-  else
-    return `M${source.x},${source.y}L${target.x},${target.y-nodeSize.y/2}`;
-  // if(this.currentNodeX > target.x)
-  //   return `M${this.currentNodeX-nodeSize.x/2},${this.currentNodeY+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-  // //Target Node is right of the source Node
-  // else if(this.currentNodeX < target.x)
-  //   return `M${this.currentNodeX+nodeSize.x/2},${this.currentNodeY+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-  // //Target Node is aligned with the source Node
-  // else
-  //   return `M${this.currentNodeX},${this.currentNodeY}L${target.x},${target.y-nodeSize.y/2}`;
-};
-
-function updateLinkFunction({nodeDatum}, linkDatum) {
-  console.log("in update paths function")
-  //console.log(nodeDatum)
-  //console.log(linkDatum)
-  const { source, target } = linkDatum;
-  //source.x = this.rd3tProps.hierarchyPointNode.x
-  if(source.x > target.x)
-    return `M${source.x-nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-  //Target Node is right of the source Node
-  else if(source.x < target.x)
-    return `M${source.x+nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-  //Target Node is aligned with the source Node
-  else
-    return `M${source.x},${source.y}L${target.x},${target.y-nodeSize.y/2}`;
-};
 
 class TalentTree extends Component {
-  constructor() {
-      super();
-      
-      this.addedNodesCount = 0;
-      this.state = {
-        data: data,
-        totalPoints: 0,
-        orientation: 'vertical',
-        collapsible: false,
-        zoomable: false,
-        draggable: false,
-        depthFactor: 100,
-        translateX: window.innerWidth/2,
-        translateY: window.innerWidth/16,
-        separation: { siblings: 2, nonSiblings: 2},
-        nodeSize: nodeSize,
-        //hierarchyPointNode: {x: 0, y:0},
-        renderCustomNodeElement: renderForeignObjectNode,
-        //pathFunc: straightPathFunc,
-        updateLinks: updateLinkFunction,
-      };
+    constructor() {
+        super();
+        this.addedNodesCount = 0;
+        this.state = {
+          id: "TalentGraph",
+          data: graphData,
+          config: config,
+          totalPoints: 0,
+          translateX: window.innerWidth/2,
+          translateY: window.innerWidth/16,
+        };
+    }  
 
-      this.setPathFunc = this.setPathFunc.bind(this);
-      this.handleCustomNodeFnChange = this.handleCustomNodeFnChange.bind(this)
-      this.handleCustomLinkChange = this.handleCustomLinkChange.bind(this)
-  }
-  
-  setPathFunc(pathFunc) {
-    this.setState({ pathFunc })
-  };
-
-  handleCustomNodeFnChange = evt => {
-    this.setState({ renderCustomNodeElement: renderForeignObjectNode});
-  };
-
-  handleCustomLinkChange = evt => {
-    this.setState({pathFunc: setPathFunction});
-  };
-
-
-
-
-  // incrementPoints() {
-  //   this.setState({totalPoints: totalPoints+1})
-  // }
-
-  // handleCustomLinkFnChange = evt => {
-  //   this.setState({ renderCustomNodeElement: renderForeignObjectNode});
-  // };
-  componentDidMount() {
-    //this.forceUpdate()
-    //console.log(this.state)
-    //console.log('hi')
-    //setPathFunction(this.state.linkDatum)
-  }
-
-  render() {
-    const foreignObjectProps = { width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth};
-
-    const getForeignObjectProps = (nodeDatum, hierarchyPointNode) => {
-      console.log('in get foreign object props: ' + hierarchyPointNode.x)
-      if(nodeDatum.sharedParent && nodeDatum.sharedParents === 2) {
-        if(nodeDatum.parentOrientation === 'left') {
-          hierarchyPointNode.x = hierarchyPointNode.x + nodeSize.x - nodeSize.x/2-borderWidth
-          return {width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: nodeSize.x - nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth}
-        }
-        if(nodeDatum.parentOrientation === 'right')
-          return {width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -nodeSize.x - nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth}
-      }
-
-      if(nodeDatum.sharedParent && nodeDatum.sharedParents === 3) {
-        if(nodeDatum.parentOrientation === 'left')
-          return {width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: 2*nodeSize.x - nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth}
-        if(nodeDatum.parentOrientation === 'right')
-          return {width: nodeSize.x+borderWidth*2, height: nodeSize.y+borderWidth*2, x: -2*nodeSize.x - nodeSize.x/2-borderWidth, y: -nodeSize.y/2-borderWidth}
-      }
-      return foreignObjectProps;
-    } 
-
-    const straightPathFunc = (linkDatum) => {
-      const { source, target } = linkDatum;
-      console.log(source)
-      console.log('source node x: ' + source.x)
-      console.log(target)
-      console.log('target node x: ' + target.x)
-      if(source.x > target.x)
-        return `M${source.x-nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-      //Target Node is right of the source Node
-      else if(source.x < target.x)
-        return `M${source.x+nodeSize.x/2},${source.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-      //Target Node is aligned with the source Node
-      else
-        return `M${source.x},${source.y}L${target.x},${target.y-nodeSize.y/2}`;
-      // if(this.hierarchyPointNode.x > target.x)
-      //   return `M${this.hierarchyPointNode.x-nodeSize.x/2},${this.hierarchyPointNode.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-      // //Target Node is right of the source Node
-      //   else if(this.hierarchyPointNode.x < target.x)
-      //     return `M${this.hierarchyPointNode.x+nodeSize.x/2},${this.hierarchyPointNode.y+nodeSize.x/2}L${target.x},${target.y-nodeSize.y/2}`;
-      //   //Target Node is aligned with the source Node
-      //   else
-      //     return `M${this.hierarchyPointNode.x},${this.hierarchyPointNode.y}L${target.x},${target.y-nodeSize.y/2}`;
-    };
-
-    const getDynamicPathClass = ({ source, target }, orientation) => {
-      // Style it as a link connecting two branch nodes by default.
-      return 'active_path';
-    };
-
-    const updateNode = (nodeDatum, hierarchyPointNode, {x, y}) => {
-      //const { source, target } = linkDatum;
-      //console.log
-      //console.log(hierarchyPointNode)
-      //console.log(x)
-      //console.log(linkDatum)
-      // console.log('current node x: ' + this.currentNodeX)
-      // hierarchyPointNode.x = hierarchyPointNode.x + x
-      // hierarchyPointNode.y = hierarchyPointNode.y + y
-      // this.setState({hierarchyPointNode})
-      
-      // console.log('current node x after set: ' + this.currentNodeX)
-      //source.x = hierarchyPointNode.x
-
-      //this.handleCustomLinkChange()
-      //hierarchyPointNode.y += y
+    // componentDidUpdate() {
+    //     this.updateLinkPaths();
+    // }
+    incrementTotalPoints() {
+        this.setState((prevState) => ({
+            totalPoints: prevState.totalPoints + 1,
+        }));
+    }
+    decrementTotalPoints() {
+        this.setState((prevState) => ({
+            totalPoints: prevState.totalPoints - 1,
+        }));
     }
 
-    const handleNodeClick = (nodeDatum) => {
-      console.log('node current points: ' + nodeDatum.currentPoints)
-      console.log('total points before click: ' + this.state.totalPoints)
-      if(nodeDatum.currentPoints < nodeDatum.maxPoints) {
-        if((nodeDatum.tier < 5 || this.state.totalPoints >= 8) && (nodeDatum.tier < 8 || this.state.totalPoints >= 20)) {
-          nodeDatum.currentPoints++
-          this.state.totalPoints++
+    updateTotalPoints() {
+        var points = 0;
+        const nodes = this.state.data.nodes;
+        if (nodes) {
+            nodes.forEach((node) => {
+              points += node.currentPoints;
+            });
         }
-        else
-          console.log("spend more points!")
-      }
+        this.setState((prevState) => ({
+            totalPoints: points,
+        }));
+    }
+    
+    updateLinkPaths() {
+        const links = this.state.data.links
+        if (links) {
+          links.forEach((link) => {
+            link.breakPoints = this.createCustomLinkPath(link);
+          });
+        }
+    }
 
-      console.log('total points after click: ' + this.state.totalPoints)
-      if(nodeDatum.currentPoints > 0) {
-        nodeDatum.status = 'active'
-        if(nodeDatum.children) {
-          const childrenArray = Array.from(nodeDatum.children);
-          childrenArray.forEach((children) => {
-            children.status = 'available' 
-          })
+    updateNodes() {
+        const nodes = this.state.data.nodes
+        if (nodes) {
+          nodes.forEach((node) => {
+            RenderCustomNode(node)
+          });
         }
-      }
-      this.handleCustomLinkChange()
-      this.handleCustomNodeFnChange()
-      console.log('node points after click: ' + nodeDatum.currentPoints)
+    }
+
+    getNodeDataById(nodeId) {
+        const { data } = this.state;
+        const node = data.nodes.find((node) => node.id === nodeId);
+        return node ? node : null;
+    }
+    createCustomLinkPath = (linkDatum) => {
+        const source = this.getNodeDataById(linkDatum.source);
+        const target = this.getNodeDataById(linkDatum.target);
+        const nodeRadius = 30;
+        //Target Node is left of the source Node
+        if(source.x > target.x) {
+            return [
+                {x: source.x-nodeRadius, y: source.y+nodeRadius},
+                {x: target.x+nodeRadius, y: target.y-nodeRadius}
+            ]
+        }
+          
+        //Target Node is right of the source Node
+        else if(source.x < target.x) {
+            return [
+                {x: source.x+nodeRadius, y: source.y+nodeRadius},
+                {x: target.x-nodeRadius, y: target.y-nodeSize.y/2}
+            ]
+        }
+        //Target Node is aligned with the source Node
+        else {
+            return [
+                {x: source.x, y: source.y+nodeRadius},
+                {x: target.x, y: target.y-nodeRadius}
+            ]
+        }
     };
 
-    const handleNodeRightClick = (nodeDatum) => {
-      console.log('node points before click: ' + nodeDatum.currentPoints)
-      //for later... if(nodeDatum.currentPoints < nodeDatum.maxPoints)
-      console.log('total points before click: ' + this.state.totalPoints)
-      if(nodeDatum.currentPoints > 0) {
-        nodeDatum.currentPoints--
-        this.state.totalPoints--
-      }
+    onClickNode = (nodeId, nodeDatum) => {
+        const updatedData = { ...this.state.data }; // Make a copy of the original data
+        const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
 
-      console.log('total points after click: ' + this.state.totalPoints)
-      if(nodeDatum.currentPoints === 0) {
-        nodeDatum.status = 'available'
-        if(nodeDatum.children) {
-          const childrenArray = Array.from(nodeDatum.children);
-          childrenArray.forEach((children) => {
-            children.status = 'unavailable' 
-          })
+        if (updatedNode.currentPoints < updatedNode.maxPoints) {
+          if (
+            (updatedNode.tier < 5 || this.state.totalPoints >= 8) &&
+            (updatedNode.tier < 8 || this.state.totalPoints >= 20) &&
+            (updatedNode.status === 'available' || updatedNode.status === 'active') &&
+            this.state.totalPoints < MAXIMUM_POINTS
+          ) {
+            updatedNode.currentPoints++;
+            this.incrementTotalPoints()
+
+          } else {
+              if(updatedNode.tier >= 5 && updatedNode.tier < 8 && this.state.totalPoints < MAXIMUM_POINTS && (updatedNode.status === 'available' || updatedNode.status === 'active')) {
+                var pointsNeeded = TIER_5_POINT_THRESHOLD-this.state.totalPoints
+                window.alert("Spend " + pointsNeeded + " more points to unlock the next tier.")
+              }
+              else if (updatedNode.tier >= 8 && this.state.totalPoints < MAXIMUM_POINTS && (updatedNode.status === 'available' || updatedNode.status === 'active')) {
+                var pointsNeeded = TIER_8_POINT_THRESHOLD-this.state.totalPoints
+                window.alert("Spend " + pointsNeeded + " more points to unlock the next tier.")
+              }
+              else if(this.state.totalPoints === MAXIMUM_POINTS) {
+                window.alert("You have used the maximum number of points. Right click a talent to unselect it.")
+              }
+          }
         }
-      }
-      this.handleCustomNodeFnChange()
-      console.log('node points after click: ' + nodeDatum.currentPoints)
+      
+        if (updatedNode.currentPoints > 0) {
+          updatedNode.status = 'active';
+          if (updatedNode.children) {
+            updatedNode.children.forEach((childId) => {
+              const childNode = this.getNodeDataById(childId);
+              if (childNode && childNode.status !== 'active') {
+                childNode.status = 'available';
+                childNode.activeLinks++;
+              }
+            });
+          }
+        }
+      
+        console.log('node points after click:', updatedNode.currentPoints);
+      
+        // Find the index of the clicked node in the nodes array
+        const nodeIndex = updatedData.nodes.findIndex((node) => node.id === nodeId);
+      
+        // Replace the old node with the updated node in the nodes array
+        if (nodeIndex !== -1) {
+          updatedData.nodes[nodeIndex] = updatedNode;
+        }
+      
+        this.setState((prevState) => ({
+          data: updatedData,
+        }));
     };
 
-    //goes inside <div style... ref={containerRef}>
-    return (
-      <div style={containerStyles} >
-          <Tree 
-              data={this.state.data}
-              totalPoints={this.state.totalPoints}
-              collapsible={this.state.collapsible}
-              draggable={this.state.draggable}
-              zoomable={this.state.zoomable}
-              translate={{x: this.state.translateX, y: this.state.translateY}}
-              nodeSize={this.state.nodeSize}
-              separation={this.state.separation}
-              depthFactor={this.state.depthFactor}
-              renderCustomNodeElement={(rd3tProps) => this.state.renderCustomNodeElement(rd3tProps, handleNodeClick, handleNodeRightClick, getForeignObjectProps, updateNode)}
-              //pathFunc={(linkProps) => this.state.pathFunc(linkProps)}
-              pathFunc={straightPathFunc}
-              pathClassFunc={getDynamicPathClass}
-              orientation="vertical"  
-              allowForeignObjects={true}
-          />
-      </div>
-  );
+    onRightClickNode = (event, nodeId, nodeDatum) => {
+        event.preventDefault();
+        const updatedData = { ...this.state.data }; // Make a copy of the original data
+        const updatedNode = { ...nodeDatum }; // Make a copy of the clicked node data
+      
+        if(updatedNode.currentPoints > 0) {
+            updatedNode.currentPoints--
+            this.decrementTotalPoints()
+        }
+
+        if(updatedNode.currentPoints === 0) {
+            updatedNode.status = 'available'
+            if(updatedNode.descendants) {
+                updatedNode.descendants.forEach((descendantId) => {
+                    const descendantNode = this.getNodeDataById(descendantId);
+                    if (descendantNode) {
+                        descendantNode.currentPoints = 0;
+                        descendantNode.status = 'unavailable';
+                    }
+                });
+            }
+        }
+      
+        // Find the index of the clicked node in the nodes array
+        const nodeIndex = updatedData.nodes.findIndex((node) => node.id === nodeId);
+      
+        // Replace the old node with the updated node in the nodes array
+        if (nodeIndex !== -1) {
+          updatedData.nodes[nodeIndex] = updatedNode;
+        }
+      
+        this.setState((prevState) => ({
+          data: updatedData,
+        }));
+
+        this.updateTotalPoints()
+    }
+
+    render() {    
+        this.updateLinkPaths()    
+          return (
+            <div style={containerStyles} >
+              <div className='bar-separator'></div>
+              <div className='talent-graph-bar'>
+                <h2 className='shaman-text'>
+                  Points Spent: 
+                </h2>
+                <h2 className='points'>
+                  {this.state.totalPoints}/{MAXIMUM_POINTS}
+                </h2>
+                <h2 className='shaman-text gap'>
+                  Level Required:
+                </h2>
+                <h2 className='points'>
+                  {(this.state.totalPoints*2) + 9} 
+                </h2>
+              </div>
+              <div style={tier5CheckpointStyle}></div>
+              <div style={tier5CheckpointText}>8 Required</div>
+              <div style={tier8CheckpointStyle}></div>
+              <div style={tier8CheckpointText}>20 Required</div>
+              <Graph
+                    ref={this.graphRef} 
+                    id={this.state.id}
+                    data={this.state.data}
+                    config={this.state.config}
+                    onClickNode={this.onClickNode}
+                    onRightClickNode={this.onRightClickNode}
+                />
+            </div>
+        );
+    }
   }
-}
-
-const generateTooltip = (nodeDatum) => {
-  const abilityDetails = nodeDatum.abilityDetails === undefined ? "" : nodeDatum.abilityDetails.join('\n') + '\n'
-  const name = nodeDatum.name + '\n'
-  const requirements = nodeDatum.requirements.join('\n') + '\n'
-  const description = nodeDatum.description
-  const tooltip = name + abilityDetails + requirements + description
-  return tooltip;
-}
-
-export default TalentTree;
+  
+  export default TalentTree;

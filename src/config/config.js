@@ -1,4 +1,4 @@
-import { RenderCustomNode } from "../pages/talents2"
+import { RenderCustomNode } from "../pages/talents"
 
 export const config = {
     width: "100vw",

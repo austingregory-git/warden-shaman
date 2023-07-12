@@ -1,5 +1,5 @@
 import React from "react";
-import { Bars, Nav, NavLink, NavMenu } from "./NavbarElements";
+import { Nav, NavLink, NavMenu } from "./NavbarElements";
 import WardenShamanLogo from './WardenShamanIcon.png'
 import ClassShamanLogo from './ClassShamanIcon.jpg'
 
@@ -12,7 +12,7 @@ const Navbar = () => {
                     <NavLink to="/overview">
                         Overview
                     </NavLink>
-                    <NavLink to="/talents2">
+                    <NavLink to="/talents">
                         Talents
                     </NavLink>
                     <NavLink to="/ui">
